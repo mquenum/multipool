@@ -51,7 +51,7 @@ public class NetworkCharacterControllerPrototype : NetworkTransform {
     if (Controller == null) {
       Controller = GetComponent<CharacterController>();
 
-      Assert.Check(Controller != null, $"An object with {nameof(NetworkCharacterControllerPrototype)} must also have a {nameof(CharacterController)} component.");
+      Assert.Check(Controller != null, $"An object with {nameof(NetworkCharacterControllerPrototypeCustom)} must also have a {nameof(CharacterController)} component.");
     }
   }
 
