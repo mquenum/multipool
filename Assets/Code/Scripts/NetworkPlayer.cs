@@ -10,6 +10,8 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
     public TextMeshProUGUI playerNickNameTM;
     [Networked(OnChanged = nameof(OnNickNameChanged))]
     public NetworkString<_16> nickName { get; set; }
+    // Remote Client Token Hash
+    [Networked] public int token { get; set; }
 
     // Start is called before the first frame update
     void Start()
