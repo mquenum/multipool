@@ -35,8 +35,10 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
 
     public void PlayerLeft(PlayerRef player)
     {
-        if (player == Object.HasInputAuthority)
+        if (player == Object.InputAuthority)
         {
+            Debug.Log("ici");
+            Debug.Log(Object);
             Runner.Despawn(Object);
         }
     }

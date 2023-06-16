@@ -175,7 +175,7 @@ public class NetworkRunnerHandler : MonoBehaviour
     }
     public void CreateGame(string sessionName, string sceneName)
     {
-        Debug.Log($"Create session {sessionName} scene {sceneName} build Index {SceneUtility.GetBuildIndexByScenePath($"scenes/{sceneName}")}");
+        Debug.Log($"Create session {sessionName} scene {sceneName} build Index {SceneUtility.GetBuildIndexByScenePath($"level/scenes/{sceneName}")}");
 
         //Join existing game as a client
         var clientTask = InitializeNetworkRunner(networkRunner, GameMode.Host, sessionName, GameManager.instance.GetConnectionToken(), NetAddress.Any(), SceneUtility.GetBuildIndexByScenePath($"level/scenes/{sceneName}"), null);
@@ -186,8 +186,11 @@ public class NetworkRunnerHandler : MonoBehaviour
     {
         Debug.Log($"Join session {sessionInfo.Name}");
 
+        Debug.Log(sessionInfo.Name);
+        Debug.Log(SceneManager.GetActiveScene().buildIndex);
+
         //Join existing game as a client
-        var clientTask = InitializeNetworkRunner(networkRunner, GameMode.Client, sessionInfo.Name, GameManager.instance.GetConnectionToken(), NetAddress.Any(), SceneManager.GetActiveScene().buildIndex, null);
+        var clientTask = InitializeNetworkRunner(networkRunner, GameMode.Client, sessionInfo.Name, GameManager.instance.GetConnectionToken(), NetAddress.Any(), SceneManager.GetActiveScene().buildIndex + 1, null);
 
     }
 

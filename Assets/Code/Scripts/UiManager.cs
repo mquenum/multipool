@@ -20,10 +20,10 @@ public class UiManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*if (PlayerPrefs.HasKey("PlayerNickname"))
+        if (PlayerPrefs.HasKey("PlayerNickname"))
         {
             playerNameInputField.text = PlayerPrefs.GetString("PlayerNickname");
-        }*/
+        }
     }
 
 

@@ -46,8 +46,8 @@ public class SessionListUIHandler : MonoBehaviour
 
         networkRunnerHandler.JoinGame(sessionInfo);
 
-        UiManager mainMenuUIHandler = FindObjectOfType<UiManager>();
-        mainMenuUIHandler.OnJoiningServer();
+        UiManager UiManager = FindObjectOfType<UiManager>();
+        UiManager.OnJoiningServer();
     }
 
     public void OnNoSessionsFound()
