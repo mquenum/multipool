@@ -69,7 +69,7 @@ public class UiManager : MonoBehaviour
         statusPanel.gameObject.SetActive(true);
     }
 
-    void HideAllPanels()
+    public void HideAllPanels()
     {
         playerDetailsPanel.SetActive(false);
         sessionBrowserPanel.SetActive(false);

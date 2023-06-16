@@ -13,12 +13,6 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
     // Remote Client Token Hash
     [Networked] public int token { get; set; }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     public override void Spawned()
     {
         if (Object.HasInputAuthority)
@@ -37,8 +31,6 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
     {
         if (player == Object.InputAuthority)
         {
-            Debug.Log("ici");
-            Debug.Log(Object);
             Runner.Despawn(Object);
         }
     }
@@ -62,5 +54,20 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
     {
         Debug.Log($"[RPC] SetNickName {nickName}");
         this.nickName = nickName;
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        if (GetInput(out NetworkInputData data))
+        {
+            if ((data.buttons & NetworkInputData.MOUSEBUTTON1) != 0)
+            {
+                Debug.Log("Oui 1");
+            }
+            if ((data.buttons & NetworkInputData.MOUSEBUTTON2) != 0)
+            {
+                Debug.Log("Oui 2");
+            }
+        }
     }
 }

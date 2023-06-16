@@ -7,13 +7,15 @@ public class PhysxBall : NetworkBehaviour
 
     public void Init(Vector3 forward)
     {
-        life = TickTimer.CreateFromSeconds(Runner, 5.0f);
+        //life = TickTimer.CreateFromSeconds(Runner, 5.0f);
         GetComponent<Rigidbody>().velocity = forward;
     }
 
     public override void FixedUpdateNetwork()
     {
         if (life.Expired(Runner))
+        {
             Runner.Despawn(Object);
+        }
     }
 }

@@ -6,6 +6,8 @@ public class CharacterInputController : MonoBehaviour
 {
     Vector2 moveInputVector = Vector2.zero;
     Vector2 viewInputVector = Vector2.zero;
+    private bool _mouseButton0;
+    private bool _mouseButton1;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +22,9 @@ public class CharacterInputController : MonoBehaviour
 
         moveInputVector.x = Input.GetAxis("Horizontal");
         moveInputVector.y = Input.GetAxis("Vertical");
+
+        _mouseButton0 = _mouseButton0 | Input.GetMouseButton(0);
+        _mouseButton1 = _mouseButton1 || Input.GetMouseButton(1);
     }
 
     public NetworkInputData GetNetworkInput()
@@ -31,6 +36,14 @@ public class CharacterInputController : MonoBehaviour
 
         //View data
         networkInputData.rotationInput = viewInputVector.x;
+
+        if (_mouseButton0)
+            networkInputData.buttons |= NetworkInputData.MOUSEBUTTON1;
+        _mouseButton0 = false;
+
+        if (_mouseButton1)
+            networkInputData.buttons |= NetworkInputData.MOUSEBUTTON2;
+        _mouseButton1 = false;
 
         return networkInputData;
     }
