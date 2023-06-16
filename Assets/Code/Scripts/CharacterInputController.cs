@@ -8,6 +8,8 @@ public class CharacterInputController : MonoBehaviour
     Vector2 viewInputVector = Vector2.zero;
     private bool _mouseButton0;
     private bool _mouseButton1;
+    float accumulatedDelta = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +27,8 @@ public class CharacterInputController : MonoBehaviour
 
         _mouseButton0 = _mouseButton0 | Input.GetMouseButton(0);
         _mouseButton1 = _mouseButton1 || Input.GetMouseButton(1);
+
+        accumulatedDelta += Input.GetAxis("Mouse Y");
     }
 
     public NetworkInputData GetNetworkInput()
@@ -37,13 +41,20 @@ public class CharacterInputController : MonoBehaviour
         //View data
         networkInputData.rotationInput = viewInputVector.x;
 
-        if (_mouseButton0)
+       /* if (_mouseButton0)
             networkInputData.buttons |= NetworkInputData.MOUSEBUTTON1;
         _mouseButton0 = false;
 
         if (_mouseButton1)
             networkInputData.buttons |= NetworkInputData.MOUSEBUTTON2;
-        _mouseButton1 = false;
+        _mouseButton1 = false;*/
+
+        if (networkInputData.isDragging = Input.GetMouseButton(0))
+        {
+            networkInputData.dragDelta = accumulatedDelta;
+
+            //accumulatedDelta = 0;
+        }
 
         return networkInputData;
     }

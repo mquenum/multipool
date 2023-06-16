@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
 
     byte[] connectionToken;
 
-    public Vector2 cameraViewRotation = Vector2.zero;
     public string playerNickName = "";
 
     private void Awake()

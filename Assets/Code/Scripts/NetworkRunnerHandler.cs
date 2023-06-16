@@ -81,7 +81,8 @@ public class NetworkRunnerHandler : MonoBehaviour
             CustomLobbyName = "OurLobbyID",
             Initialized = initialized,
             SceneManager = sceneManager,
-            ConnectionToken = connectionToken
+            ConnectionToken = connectionToken,
+            PlayerCount = 2
         });
     }
 
@@ -101,7 +102,8 @@ public class NetworkRunnerHandler : MonoBehaviour
             SceneManager = sceneManager,
             HostMigrationToken = hostMigrationToken, // contains all necessary info to restart the Runner
             HostMigrationResume = HostMigrationResume, // this will be invoked to resume the simulation
-            ConnectionToken = GameManager.instance.GetConnectionToken()
+            ConnectionToken = GameManager.instance.GetConnectionToken(),
+            PlayerCount = 2
         });
     }
 
@@ -173,25 +175,19 @@ public class NetworkRunnerHandler : MonoBehaviour
             Debug.Log("JoinLobby ok");
         }
     }
+
     public void CreateGame(string sessionName, string sceneName)
     {
         Debug.Log($"Create session {sessionName} scene {sceneName} build Index {SceneUtility.GetBuildIndexByScenePath($"level/scenes/{sceneName}")}");
 
         //Join existing game as a client
         var clientTask = InitializeNetworkRunner(networkRunner, GameMode.Host, sessionName, GameManager.instance.GetConnectionToken(), NetAddress.Any(), SceneUtility.GetBuildIndexByScenePath($"level/scenes/{sceneName}"), null);
-
     }
 
     public void JoinGame(SessionInfo sessionInfo)
     {
         Debug.Log($"Join session {sessionInfo.Name}");
-
-        Debug.Log(sessionInfo.Name);
-        Debug.Log(SceneManager.GetActiveScene().buildIndex);
-
         //Join existing game as a client
         var clientTask = InitializeNetworkRunner(networkRunner, GameMode.Client, sessionInfo.Name, GameManager.instance.GetConnectionToken(), NetAddress.Any(), SceneManager.GetActiveScene().buildIndex + 1, null);
-
     }
-
 }

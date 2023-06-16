@@ -56,7 +56,6 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
         if (characterInputController != null)
         {
             input.Set(characterInputController.GetNetworkInput());
-
         }
     }
 
@@ -111,7 +110,6 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     }
 
     public void OnDisconnectedFromServer(NetworkRunner runner) { Debug.Log("OnDisconnectedFromServer"); }
-
     public void OnConnectedToServer(NetworkRunner runner) { Debug.Log("OnConnectedToServer"); }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { Debug.Log("OnShutdown"); }
