@@ -6,12 +6,32 @@ using TMPro;
 
 public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
 {
+    [Networked]
+    public PlayerRef NetworkPlayerRef { get; set; }
     public static NetworkPlayer Local { get; set; }
     public TextMeshProUGUI playerNickNameTM;
     [Networked(OnChanged = nameof(OnNickNameChanged))]
     public NetworkString<_16> nickName { get; set; }
     // Remote Client Token Hash
-    [Networked] public int token { get; set; }
+    [Networked]
+    public int token { get; set; }
+    [Networked]
+    public bool IsLoaded { get; set; }
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        PlayerManager.Instance.RegisterPlayer(this);
+    }
+
+    private void OnDestroy()
+    {
+        PlayerManager.Instance.UnregisterPlayer(this);
+    }
 
     public override void Spawned()
     {
@@ -69,5 +89,10 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
                 Debug.Log("Oui 2");
             }
         }
+    }
+
+    public bool IsLocalPlayer()
+    {
+        return PlayerManager.Instance.Runner.LocalPlayer == NetworkPlayerRef;
     }
 }

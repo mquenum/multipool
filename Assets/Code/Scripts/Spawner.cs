@@ -9,17 +9,20 @@ using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
 {
-    public NetworkPlayer playerPrefab;
-    CharacterInputController characterInputController;
+    [SerializeField] private GameObject _playerManagerPrefab;
+    [SerializeField] private NetworkPlayer _playerPrefab;
+    [SerializeField] private GameObject _ball;
+    private CharacterInputController _characterInputController;
     // Mapping between Token ID and Re-created Players
-    Dictionary<int, NetworkPlayer> mapTokenIDWithNetworkPlayer;
-    SessionListUIHandler sessionListUIHandler;
+    private Dictionary<int, NetworkPlayer> _mapTokenIDWithNetworkPlayer;
+    private SessionListUIHandler _sessionListUIHandler;
+    private Dictionary<PlayerRef, NetworkPlayer> _spawnedPlayers = new Dictionary<PlayerRef, NetworkPlayer>();
 
     void Awake()
     {
         //Create a new Dictionary
-        mapTokenIDWithNetworkPlayer = new Dictionary<int, NetworkPlayer>();
-        sessionListUIHandler = FindObjectOfType<SessionListUIHandler>(true);
+        _mapTokenIDWithNetworkPlayer = new Dictionary<int, NetworkPlayer>();
+        _sessionListUIHandler = FindObjectOfType<SessionListUIHandler>(true);
     }
 
     public Vector3 GetRandomSpawnPoint()
@@ -31,8 +34,25 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (runner.IsServer)
         {
+            if (runner.LocalPlayer == player)
+            {
+                runner.Spawn(_playerManagerPrefab);
+            }
+
             Debug.Log("OnPlayerJoined we are server. Spawning player");
-            runner.Spawn(playerPrefab, new Vector3((player.RawEncoded % runner.Config.Simulation.DefaultPlayers) * 3, 1f, 0), Quaternion.identity, player);
+            NetworkPlayer networkPlayer = runner.Spawn(_playerPrefab, new Vector3((player.RawEncoded % runner.Config.Simulation.DefaultPlayers) * 3, 1f, 0), Quaternion.identity, player);
+            _spawnedPlayers.Add(player, networkPlayer);
+
+            networkPlayer.GetComponent<NetworkPlayer>().NetworkPlayerRef = player;
+
+            Debug.Log($"nb players :{_spawnedPlayers.Count}");
+
+            if (_spawnedPlayers.Count == 2)
+            {
+                //set game state
+                PlayerManager.State.Server_SetState(GameState.EGameState.Game);
+                runner.Spawn(_ball, new Vector3(0, 1.6f, -4));
+            }
         }
         else
         {
@@ -43,32 +63,39 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         Debug.Log("OnPlayerLeft");
-        playerPrefab.PlayerLeft(player);
+        if (runner.IsServer)
+        {
+            if (_spawnedPlayers.TryGetValue(player, out NetworkPlayer networkPlayer))
+            {
+                _playerPrefab.PlayerLeft(player);
+                _spawnedPlayers.Remove(player);
+            }
+        }
     }
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        if (characterInputController == null && NetworkPlayer.Local != null)
+        if (_characterInputController == null && NetworkPlayer.Local != null)
         {
-            characterInputController = NetworkPlayer.Local.GetComponent<CharacterInputController>();
+            _characterInputController = NetworkPlayer.Local.GetComponent<CharacterInputController>();
         }
 
-        if (characterInputController != null)
+        if (_characterInputController != null)
         {
-            input.Set(characterInputController.GetNetworkInput());
+            input.Set(_characterInputController.GetNetworkInput());
         }
     }
 
     public void SetConnectionTokenMapping(int token, NetworkPlayer networkPlayer)
     {
-        mapTokenIDWithNetworkPlayer.Add(token, networkPlayer);
+        _mapTokenIDWithNetworkPlayer.Add(token, networkPlayer);
     }
 
     public void OnHostMigrationCleanUp()
     {
         Debug.Log("Spawner OnHostMigrationCleanUp started");
 
-        foreach (KeyValuePair<int, NetworkPlayer> entry in mapTokenIDWithNetworkPlayer)
+        foreach (KeyValuePair<int, NetworkPlayer> entry in _mapTokenIDWithNetworkPlayer)
         {
             NetworkObject networkObjectInDictionary = entry.Value.GetComponent<NetworkObject>();
 
@@ -86,22 +113,22 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
         //Only update the list of sessions when the session list UI handler is active
-        if (sessionListUIHandler == null)
+        if (_sessionListUIHandler == null)
             return;
 
         if (sessionList.Count == 0)
         {
             Debug.Log("Joined lobby no sessions found");
 
-            sessionListUIHandler.OnNoSessionsFound();
+            _sessionListUIHandler.OnNoSessionsFound();
         }
         else
         {
-            sessionListUIHandler.ClearList();
+            _sessionListUIHandler.ClearList();
 
             foreach (SessionInfo sessionInfo in sessionList)
             {
-                sessionListUIHandler.AddToList(sessionInfo);
+                _sessionListUIHandler.AddToList(sessionInfo);
 
                 Debug.Log($"Found session {sessionInfo.Name} playerCount {sessionInfo.PlayerCount}");
             }

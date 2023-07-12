@@ -1,9 +1,12 @@
 using UnityEngine;
 using Fusion;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public class PhysxBall : NetworkBehaviour
 {
-    public Rigidbody rb;
+    public Rigidbody _rb;
     [Networked]
     NetworkInputData CurrInput { get; set; }
     [Networked]
@@ -17,6 +20,31 @@ public class PhysxBall : NetworkBehaviour
     NetworkInputData prevInput = default;
 
     CharacterInputController characterInputController;
+
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody>();
+    }
+
+    public override void Spawned()
+    {
+        _rb.Sleep();
+        PlayerManager.Instance.Rpc_LoadDone();
+    }
+
+    private IEnumerator Start()
+    {
+        while (PlayerManager.Instance == null)
+        {
+            yield return null;
+        }
+        PlayerManager.Instance.OnPlayerTurnChanged.AddListener(OnPlayerTurnChanged);
+    }
+
+    private void OnPlayerTurnChanged(NetworkPlayer newPlayer)
+    {
+
+    }
 
     public override void FixedUpdateNetwork()
     {
@@ -40,7 +68,7 @@ public class PhysxBall : NetworkBehaviour
                 Debug.Log("CanPutt && PuttStrength > 0");
                 Vector3 fwd = Quaternion.AngleAxis((float)CurrInput.yaw, Vector3.up) * Vector3.forward;
 
-                rb.AddForce(fwd * PuttStrength, ForceMode.VelocityChange);
+                _rb.AddForce(fwd * PuttStrength, ForceMode.VelocityChange);
             }
         }
 

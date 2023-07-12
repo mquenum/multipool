@@ -257,7 +257,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93c8f1f9eb15fb8408b46f020bae6398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraViewRotation: {x: 0, y: 0}
   playerNickName: 
 --- !u!4 &86043985
 Transform:
@@ -3691,9 +3690,9 @@ RectTransform:
   - {fileID: 231833827}
   - {fileID: 600627965}
   - {fileID: 857214705}
+  - {fileID: 248210941}
   - {fileID: 108663307}
   - {fileID: 876733646}
-  - {fileID: 248210941}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

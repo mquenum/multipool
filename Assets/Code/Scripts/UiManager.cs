@@ -26,7 +26,6 @@ public class UiManager : MonoBehaviour
         }
     }
 
-
     public void OnFindGameClicked()
     {
         PlayerPrefs.SetString("PlayerNickname", playerNameInputField.text);
