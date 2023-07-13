@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class CharacterInputController : MonoBehaviour
 {
-    Vector2 moveInputVector = Vector2.zero;
-    Vector2 viewInputVector = Vector2.zero;
+    private NetworkPlayer _networkPlayer;
+    private Vector2 moveInputVector = Vector2.zero;
+    private Vector2 viewInputVector = Vector2.zero;
     private bool _mouseButton0;
     private bool _mouseButton1;
-    float accumulatedDelta = 0;
+    private float _accumulatedDelta = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _networkPlayer = GetComponent<NetworkPlayer>();
+
+
     }
 
     // Update is called once per frame
@@ -28,7 +31,15 @@ public class CharacterInputController : MonoBehaviour
         _mouseButton0 = _mouseButton0 | Input.GetMouseButton(0);
         _mouseButton1 = _mouseButton1 || Input.GetMouseButton(1);
 
-        accumulatedDelta += Input.GetAxis("Mouse Y");
+        _accumulatedDelta += Input.GetAxis("Mouse Y");
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            // Dragging stopped
+            Debug.Log("Dragging stopped!");
+            PlayerManager.Instance.EndPlayerTurn();
+            _accumulatedDelta = 0;
+        }
     }
 
     public NetworkInputData GetNetworkInput()
@@ -51,9 +62,9 @@ public class CharacterInputController : MonoBehaviour
 
         if (networkInputData.isDragging = Input.GetMouseButton(0))
         {
-            networkInputData.dragDelta = accumulatedDelta;
-
-            //accumulatedDelta = 0;
+            Debug.Log($"{_networkPlayer.NetworkPlayerRef} is local player ? {_networkPlayer.IsLocalPlayer()}");
+            Debug.Log("networkInputData.isDragging = Input.GetMouseButton(0)");
+            networkInputData.dragDelta = _accumulatedDelta;
         }
 
         return networkInputData;

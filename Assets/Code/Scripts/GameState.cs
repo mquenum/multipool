@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameState : NetworkBehaviour
 {
-    public enum EGameState { Lobby, Loading, Game }
+    public enum EGameState { Lobby, Game }
     
     [Networked] public EGameState Current { get; set; }
     [Networked] public EGameState Previous { get; set; }
@@ -21,26 +21,6 @@ public class GameState : NetworkBehaviour
             if (Runner.SessionInfo.IsOpen)
                 Runner.SessionInfo.IsOpen = false;
         };
-
-        StateMachine[EGameState.Loading].onEnter = prev =>
-        {
-            if (prev == EGameState.Lobby)
-            {
-                Debug.Log("ici");
-                Runner.SetActiveScene("01-PoolGame");
-            }
-        };
-            
-        StateMachine[EGameState.Loading].onUpdate = () =>
-        {
-            if (Runner.IsServer)
-            {
-                if (PlayerManager.Instance.All(p => p.IsLoaded))
-                {
-                    Server_SetState(EGameState.Game);
-                }
-            }
-        };
         
         StateMachine[EGameState.Game].onEnter = prev =>
         {
@@ -49,7 +29,6 @@ public class GameState : NetworkBehaviour
                 PlayerManager.Instance.StartGame();
             }
         };
-        
     }
 
     public override void FixedUpdateNetwork()

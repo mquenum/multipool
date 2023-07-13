@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3833043855639657127
 Transform:
   m_ObjectHideFlags: 0
@@ -101,7 +101,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7995499496844206943
 RectTransform:
   m_ObjectHideFlags: 0
@@ -334,7 +334,6 @@ GameObject:
   - component: {fileID: 9114109690560541155}
   - component: {fileID: 7474983337330663656}
   - component: {fileID: 1965264860805676568}
-  - component: {fileID: 8724828761063811042}
   - component: {fileID: 3278151252644908884}
   m_Layer: 0
   m_Name: NetworkPlayer
@@ -373,12 +372,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  playerNickNameTM: {fileID: 6827209114421888574}
-  _nickName:
-    _length: 0
-    _data:
-      Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   _token: 0
+  _IsLoaded: 0
 --- !u!114 &9114109690560541155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,7 +398,6 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 7571521281236972505}
   - {fileID: 1965264860805676568}
-  - {fileID: 8724828761063811042}
   SimulationBehaviours: []
 --- !u!143 &7474983337330663656
 CharacterController:
@@ -467,19 +461,6 @@ MonoBehaviour:
   rotationSpeed: 30
   _IsGrounded: 0
   _Velocity: {x: 0, y: 0, z: 0}
---- !u!114 &8724828761063811042
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8246585841475606297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ffbc521f367dcc4ca6b4100dd8cde4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
 --- !u!114 &3278151252644908884
 MonoBehaviour:
   m_ObjectHideFlags: 0

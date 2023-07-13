@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class GameHud : MonoBehaviour
 {
-    [SerializeField]
-    private TMPro.TMP_Text _text;
+    [SerializeField] private TMPro.TMP_Text _text;
 
     private IEnumerator Start()
     {
@@ -20,12 +19,11 @@ public class GameHud : MonoBehaviour
     {
         if (newPlayer.IsLocalPlayer())
         {
-            _text.text = $"{newPlayer.nickName}, it's your turn!";
+            _text.text = $"{newPlayer.NetworkPlayerRef}, it's your turn!";
         }
         else
         {
-            _text.text = $"{newPlayer.nickName} turn";
+            _text.text = $"{newPlayer.NetworkPlayerRef} turn";
         }
-
     }
 }

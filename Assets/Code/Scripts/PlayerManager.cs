@@ -48,12 +48,14 @@ public class PlayerManager : NetworkBehaviour
     {
         NetworkPlayer player = _players.First(p => p.NetworkPlayerRef == info.Source);
         player.IsLoaded = true;
-        Debug.Log($"Player {player.nickName} has loaded.");
+        Debug.Log($"Player {player.NetworkPlayerRef} has loaded.");
     }
 
     public void RegisterPlayer(NetworkPlayer player)
     {
+        Debug.Log("RegisterPlayer" + player.NetworkPlayerRef);
         _players.Add(player);
+        Debug.Log(_players.Count);
     }
 
     public void UnregisterPlayer(NetworkPlayer player)
@@ -88,6 +90,7 @@ public class PlayerManager : NetworkBehaviour
 
     public void EndPlayerTurn(bool fault = false)
     {
+        Debug.Log("ici");
         //add player again at the end of the list
         _playerTurns.Add(ActivePlayer);
 

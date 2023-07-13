@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 9089734897415617077}
   - component: {fileID: 4903578894755749030}
   - component: {fileID: 1277849345854978405}
-  - component: {fileID: 3369567373844806928}
+  - component: {fileID: 6161214073358656947}
   m_Layer: 0
   m_Name: PoolBall
   m_TagString: Untagged
@@ -198,7 +198,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 9089734897415617077}
-  - {fileID: 3369567373844806928}
+  - {fileID: 6161214073358656947}
   SimulationBehaviours: []
 --- !u!135 &1277849345854978405
 SphereCollider:
@@ -221,7 +221,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3369567373844806928
+--- !u!114 &6161214073358656947
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -230,10 +230,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6055973828684410713}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2151ae536a4c504496eb16d684fe7c2, type: 3}
+  m_Script: {fileID: 11500000, guid: af4d5015194a878459bfc0e8404ce6cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  rb: {fileID: 5132320598511072509}
-  maxPuttStrength: 10
-  puttGainFactor: 0.1
+  _angularDrag: 0.6
+  _drag: 0.6
